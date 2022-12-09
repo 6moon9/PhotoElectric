@@ -2,13 +2,10 @@
 
 #include "PhotoElectric.h"
 
-PhotoElectric::PhotoElectric(uint8_t iPinT, uint8_t iPinE)
+PhotoElectric::PhotoElectric(uint8_t iPin)
 {
-    pinT = iPinT;
-    pinE = iPinE;
-    pinMode(pinT, OUTPUT);
-    pinMode(pinE, INPUT);
-    digitalWrite(pinT, HIGH);
+    pin = iPin;
+    pinMode(pin, INPUT);
 }
 
 /**
@@ -18,10 +15,15 @@ PhotoElectric::PhotoElectric(uint8_t iPinT, uint8_t iPinE)
  */
 bool PhotoElectric::detects()
 {
-    if (!digitalRead(pinE))
+    if (!state())
     {
-        while (!digitalRead(pinE));
+        while (!state());
         return true;
     }
     return false;
+}
+
+bool PhotoElectric::state()
+{
+    return digitalRead(pin);
 }
