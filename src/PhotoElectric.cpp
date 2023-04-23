@@ -2,10 +2,11 @@
 
 #include "PhotoElectric.h"
 
-PhotoElectric::PhotoElectric(uint8_t iPin, int iMinCount = 1)
+PhotoElectric::PhotoElectric(uint8_t iPin, int iMinCount = 1, bool iReversed = false)
 {
     pin = iPin;
     minCount = iMinCount;
+    reversed = iReversed;
     pinMode(pin, INPUT);
 }
 
@@ -16,20 +17,24 @@ PhotoElectric::PhotoElectric(uint8_t iPin, int iMinCount = 1)
  */
 bool PhotoElectric::detects()
 {
-    if (!state())
+    if (state())
     {
-        // while (!state());
         count++;
         if (count >= minCount)
         {
             count = 0;
+            while (state());
             return true;
         }
+    }
+    else
+    {
+        count = 0;
     }
     return false;
 }
 
 bool PhotoElectric::state()
 {
-    return digitalRead(pin);
+    return digitalRead(pin) == reversed;
 }
