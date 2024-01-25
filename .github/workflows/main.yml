@@ -22,6 +22,6 @@ jobs:
       id: create_release
       uses: actions/create-release@v1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.RELEASE_TOKEN }}
         tag_name: ${{ github.sha }}
         release_name: Release ${{ github.sha }}
